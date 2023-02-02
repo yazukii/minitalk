@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yidouiss <yidouiss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yidouiss <yidouiss@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:00:02 by yidouiss          #+#    #+#             */
-/*   Updated: 2023/01/30 15:14:45 by yidouiss         ###   ########.fr       */
+/*   Updated: 2023/02/02 12:37:42 by yidouiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,48 +14,42 @@
 #include <unistd.h>
 #include <signal.h>
 
-typedef struct s_data
+void	handler(int signal)
 {
-	int		pid;
-	char	c;
-	int		i;
-}				t_data;
+	static int	bit;
+	static int	i;
 
-t_data	data;
-
-void	handler(int sig)
-{
-	(void)sig;
-	if (data.i == 8)
+	if (signal == SIGUSR1)
+		i |= (0x01 << bit);
+	bit++;
+	if (bit == 8)
 	{
-		ft_putchar(data.c);
-		data.c = 0;
-		data.i = 0;
+		ft_putchar(i);
+		bit = 0;
+		i = 0;
 	}
-	else
-	{
-		data.c = data.c << 1;
-		if (sig == SIGUSR1)
-			data.c = data.c | 1;
-		data.i++;
-	}
-	kill(data.pid, SIGUSR2);
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	int	pid;
 	struct sigaction sa;
 
+	(void)argv;
+	if (argc != 1)
+	{
+		ft_putstr("Usage: ./server");
+		return (0);
+	}
 	pid = getpid();
 	ft_putstr("Server PID: ");
 	ft_putnbr_fd(pid, 1);
 	ft_putchar('\n');
 	sa.sa_handler = &handler;
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
 	while (1)
 	{
+		sigaction(SIGUSR1, &sa, NULL);
+		sigaction(SIGUSR2, &sa, NULL);
 		pause();
 	}
 	return (0);

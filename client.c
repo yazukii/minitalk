@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yidouiss <yidouiss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yidouiss <yidouiss@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:00:05 by yidouiss          #+#    #+#             */
-/*   Updated: 2023/01/30 15:15:55 by yidouiss         ###   ########.fr       */
+/*   Updated: 2023/02/02 13:10:35 by yidouiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,17 @@
 
 void	send_char(char c, int pid)
 {
-	int i;
+	int	bit;
 
-	i = 0;
-	while (i < 8)
+	bit = 0;
+	while (bit < 8)
 	{
-		if (c & (1 << i))
+		if ((c & (0x01 << bit)) != 0)
 			kill(pid, SIGUSR1);
 		else
 			kill(pid, SIGUSR2);
-		i++;
-		usleep(100);
+		usleep(600);
+		bit++;
 	}
 }
 
@@ -34,7 +34,10 @@ int	main(int argc, char **argv)
 	int i;
 
 	if (argc != 3)
+	{
 		ft_putstr("Usage: ./client [server PID] [message]");
+		return (1);
+	}
 	i = 0;
 	while (argv[2][i])
 	{
