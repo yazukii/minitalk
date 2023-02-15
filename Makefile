@@ -10,10 +10,10 @@ all: server client
 bonus: server client
 
 server: server.o libft
-	$(CC) -o $@ $< -Llibft -lft
+	$(CC) $(CFLAGS) -o $@ $< -Llibft -lft
 
 client: client.o libft
-	$(CC) -o $@ $< -Llibft -lft
+	$(CC) $(CFLAGS) -o $@ $< -Llibft -lft
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) $?
