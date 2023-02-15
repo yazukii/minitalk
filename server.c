@@ -6,7 +6,7 @@
 /*   By: yidouiss <yidouiss@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:00:02 by yidouiss          #+#    #+#             */
-/*   Updated: 2023/02/08 21:11:18 by yidouiss         ###   ########.fr       */
+/*   Updated: 2023/02/15 18:51:35 by yidouiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	get_len(int *bit, char **str, int *received, int s)
 		len_val += ft_power(2, *bit);
 	if (*bit == 31)
 	{
-		*received = 1;
+		*received = len_val;
 		*str = malloc(len_val + 1 * sizeof(char));
 		*bit = 0;
 		len_val = 0;
@@ -46,7 +46,7 @@ void	restart(int *len, char **str, int *i)
 	*len = 0;
 	if (str)
 	{
-		ft_putstr(*str);
+		ft_putendl_fd(*str, 1);
 		free(*str);
 		*str = 0;
 	}
@@ -62,10 +62,12 @@ void	get_info(int signal)
 	static char	*final_str = 0;
 
 	if (!len)
+	{
 		get_len(&bit, &final_str, &len, signal);
+	}
 	else
 	{
-		if (signal == SIGUSR2)
+		if (signal == SIGUSR1)
 			char_value += ft_power(2, bit);
 		if (bit == 7)
 		{
@@ -79,6 +81,7 @@ void	get_info(int signal)
 		bit++;
 	}
 }
+
 int	main(int argc, char **argv)
 {
 	int					pid;
