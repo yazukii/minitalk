@@ -6,7 +6,7 @@
 /*   By: yidouiss <yidouiss@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:00:05 by yidouiss          #+#    #+#             */
-/*   Updated: 2023/02/15 17:48:29 by yidouiss         ###   ########.fr       */
+/*   Updated: 2023/02/25 12:26:03 by yidouiss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	send_len(int len, int pid)
 	int	i;
 
 	i = -1;
-	ft_putnbr_fd(len, 1);
 	while (++i < 32)
 	{
 		if (len & 0x01)
